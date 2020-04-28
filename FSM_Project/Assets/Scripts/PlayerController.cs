@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 m_Movement;
     [SerializeField] private float m_Speed;
 
+    [SerializeField] private Detector m_Detector;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -22,13 +24,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        m_Movement.x = Input.GetAxis("Horizontal");
-        m_Movement.z = Input.GetAxis("Vertical");
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
+        //m_Movement.x = Input.GetAxis("Horizontal");
+        //m_Movement.z = Input.GetAxis("Vertical");
+        m_Movement = ((Vector3.right * Input.GetAxis("Horizontal")) + (Vector3.forward * Input.GetAxis("Vertical"))).normalized;
+        
+        if(m_Detector.Target)
         {
-
-            //m_Movement = ((Vector3.right * Input.GetAxis("Horizontal")) + (Vector3.forward * Input.GetAxis("Vertical"))).normalized;
-        }       
+            Debug.Log("See " + m_Detector.Target.name);
+        }
     }
 
     private void MoveCharacter(Vector3 direction)
