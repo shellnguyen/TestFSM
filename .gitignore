@@ -58,3 +58,6 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+FSM_Project/Library/
+FSM_Project/Temp/
+FSM_Project/Logs/
