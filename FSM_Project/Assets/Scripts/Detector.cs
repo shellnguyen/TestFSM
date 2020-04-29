@@ -5,6 +5,11 @@ using UnityEngine;
 public class Detector : MonoBehaviour
 {
     [SerializeField] private GameObject m_Target;
+    public string ParentTag
+    {
+        get;
+        set;
+    }
 
     public GameObject Target
     {
@@ -28,9 +33,31 @@ public class Detector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag.Equals("Obstacle"))
+        if(other.tag.Equals(ParentTag))
         {
-            m_Target = other.gameObject;
+            return;
+        }
+
+        switch(other.tag)
+        {
+            case "Obstacle":
+                {
+                    //might have different code later
+                    m_Target = other.gameObject;
+                    break;
+                }
+            case "Enemy":
+                {
+                    //might have different code later
+                    m_Target = other.gameObject;
+                    break;
+                }
+            case "Player":
+                {
+                    //might have different code later
+                    m_Target = other.gameObject;
+                    break;
+                }
         }
     }
 
