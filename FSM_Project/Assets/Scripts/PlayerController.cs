@@ -9,10 +9,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float m_Speed;
 
     [SerializeField] private Detector m_Detector;
+    private StateMachine m_StateMachine;
 
     // Start is called before the first frame update
     private void Start()
     {
+        m_Detector.ParentTag = this.tag;
         m_RB = this.GetComponent<Rigidbody>();
     }
 
