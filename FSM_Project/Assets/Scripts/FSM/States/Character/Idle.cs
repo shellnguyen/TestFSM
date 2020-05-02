@@ -12,13 +12,16 @@ public class Idle : IState
 
     public void OnEnter()
     {
+        Debug.Log("Enter Idle state");
     }
 
     public void OnExit()
     {
+        Debug.Log("Exit Idle state");
     }
 
     public void Update()
     {
+        
     }
 }
