@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Walking : IState
+public class Walking : CharacterState
 {
-    private Animator m_Animator;
-
-    public Walking(Animator anim)
+    public Walking(CharacterController controller) : base(controller)
     {
-        m_Animator = anim;
     }
 
-    public void OnEnter()
+    //private CharacterController m_Controller;
+
+    public override void OnEnter()
+    {
+        Debug.Log("WTF");
+        m_Controller.Animator.SetFloat("Speed", 1.0f);
+    }
+
+    public override void OnExit()
+    {
+        //throw new System.NotImplementedException();
+    }
+
+    public override void Update()
     {
         
-    }
-
-    public void OnExit()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Update()
-    {
-        throw new System.NotImplementedException();
     }
 }

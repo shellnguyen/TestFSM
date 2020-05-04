@@ -1,30 +1,22 @@
 ﻿using UnityEngine.AI;
 
-public class Pursue : IState
+public class Pursue : CharacterState
 {
-    private Detector m_CharacterDetector;
-    private NavMeshAgent m_CharacterAgent;
-
-    public Pursue(Detector detector, NavMeshAgent agent)
-    {
-        m_CharacterDetector = detector;
-        m_CharacterAgent = agent;
-    }
-
-    public void OnEnter()
-    {
-        
-    }
-
-    public void OnExit()
+    public Pursue(CharacterController controller) : base(controller)
     {
     }
 
-    public void Update()
+    public override void OnEnter()
     {
-        if(m_CharacterDetector.Target)
-        {
-            m_CharacterAgent.SetDestination(m_CharacterDetector.Target.transform.position);
-        }
+        m_Controller.Animator.SetFloat("Speed", 1.0f);
+    }
+
+    public override void OnExit()
+    {
+    }
+
+    public override void Update()
+    {
+        m_Controller.Pursue();
     }
 }

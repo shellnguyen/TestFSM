@@ -3,25 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : CharacterController
 {
-    [SerializeField] private Rigidbody m_RB;
     [SerializeField] private NavMeshAgent m_NavMeshAgent;
-    [SerializeField] private Detector m_Detector;
     [SerializeField] private GameObject m_ExplosionPrefab;
 
-    private StateMachine m_StateMachine;
-
-    private void Awake()
+    public NavMeshAgent NavMeshAgent
     {
-        m_Detector.ParentTag = this.tag;
-        m_RB = GetComponent<Rigidbody>();
-        m_NavMeshAgent = GetComponent<NavMeshAgent>();
+        get
+        {
+            return m_NavMeshAgent;
+        }
+    }
 
-        m_StateMachine = new StateMachine();
+    protected override void Initialize()
+    {
+        base.Initialize();
+        m_NavMeshAgent = this.GetComponent<NavMeshAgent>();
+        //m_Speed = 3.0f;
+        //m_IsMove = false;
+    }
 
-        Idle idleState = new Idle();
-        Pursue pursueState = new Pursue(m_Detector, m_NavMeshAgent);
+    public override void Attack()
+    {
+        base.Attack();
+        Explode();
+    }
+
+    public override void Pursue()
+    {
+        base.Pursue();
+        if(m_Detector.Target)
+        {
+            m_NavMeshAgent.SetDestination(m_Detector.Target.transform.position);
+        }
+    }
+
+    protected override void SetupStates()
+    {
+        base.SetupStates();
+
+        Idle idleState = new Idle(this);
+        Pursue pursueState = new Pursue(this);
         Engaged engagedState = new Engaged(this);
 
         m_StateMachine.AddTransition(idleState, pursueState, HasTarget);
@@ -29,6 +52,12 @@ public class EnemyController : MonoBehaviour
         m_StateMachine.AddTransition(pursueState, engagedState, ReachedTarget);
 
         m_StateMachine.SetState(idleState);
+    }
+
+    private void Awake()
+    {
+        Initialize();
+        SetupStates();
     }
 
     // Update is called once per frame
@@ -57,7 +86,7 @@ public class EnemyController : MonoBehaviour
         return false;
     }
 
-    public void Explode()
+    private void Explode()
     {
         Instantiate(m_ExplosionPrefab, transform.position, Quaternion.identity);
         Destroy(this.gameObject);

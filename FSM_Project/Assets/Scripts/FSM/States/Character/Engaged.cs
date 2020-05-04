@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Engaged : IState
+public class Engaged : CharacterState
 {
-    private EnemyController m_Enemy;
-
-    public Engaged(EnemyController enemy)
-    {
-        m_Enemy = enemy;
-    }
-
-    public void OnEnter()
+    public Engaged(CharacterController controller) : base(controller)
     {
     }
 
-    public void OnExit()
+    public override void OnEnter()
+    {
+        m_Controller.Animator.SetFloat("Speed", 0.0f);
+    }
+
+    public override void OnExit()
     {
     }
 
-    public void Update()
+    public override void Update()
     {
-        m_Enemy.Explode();
+        m_Controller.Attack();
+        //m_Char.Explode();
     }
 }
